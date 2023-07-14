@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kull Note</string>
+    <string name="facebook_app_id">179383811626879</string>
+    <string name="fb_login_protocol_scheme">fb179383811626879</string>
+    <string name="facebook_client_token">5b7e03a4adafe954e4837d644d25372a</string>
+
+</resources>
