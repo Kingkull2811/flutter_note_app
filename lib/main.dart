@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kull_note_app/network/provider/dark_mode_provider.dart';
 
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
@@ -19,41 +20,44 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   static final navigatorKey = GlobalKey<NavigatorState>();
 
-  static final ValueNotifier<ThemeMode> themeNotifier =
-      SharedPreferencesStorage().getNightMode()
-          ? ValueNotifier(ThemeMode.dark)
-          : ValueNotifier(ThemeMode.light);
+  // static final ValueNotifier<ThemeMode> themeNotifier =
+  //     SharedPreferencesStorage().getNightMode()
+  //         ? ValueNotifier(ThemeMode.dark)
+  //         : ValueNotifier(ThemeMode.light);
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: themeNotifier,
-      builder: (BuildContext context, currentMode, _) {
-        return MaterialApp(
-          title: 'Kull Note App',
-          debugShowCheckedModeBanner: false,
-          navigatorKey: navigatorKey,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: currentMode,
-          supportedLocales: L10n.all,
-          // locale: const Locale('en'),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          onGenerateRoute: AppRoute.onGenerateRoute,
-          initialRoute: AppRoute.main,
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = ref.watch(darkModeProvider).isDarkMode();
+
+    return MaterialApp(
+      title: 'Kull Note App',
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      supportedLocales: L10n.all,
+      // locale: const Locale('en'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      onGenerateRoute: AppRoute.onGenerateRoute,
+      initialRoute: AppRoute.main,
     );
+    // return ValueListenableBuilder(
+    //   valueListenable: themeNotifier,
+    //   builder: (BuildContext context, currentMode, _) {
+    //
+    //   },
+    // );
   }
 }

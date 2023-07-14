@@ -2,17 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kull_note_app/network/provider/auth_provider.dart';
-import 'package:kull_note_app/screens/login/login_state_notifier.dart';
 
-import '../../main.dart';
+import '../../network/provider/auth_provider.dart';
+import '../../network/provider/dark_mode_provider.dart';
 import '../../routes.dart';
 import '../../util/app_theme.dart';
 import '../../util/screen_util.dart';
-import '../../util/shared_preferences_storage.dart';
 import '../../widgets/button.dart';
 import '../../widgets/custom_input_field.dart';
 import 'login_state.dart';
+import 'login_state_notifier.dart';
 
 class LoginScreen extends StatefulHookConsumerWidget {
   const LoginScreen({super.key});
@@ -44,6 +43,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
+    final isDarkMode = ref.watch(darkModeProvider).isDarkMode();
 
     ref.listen<LoginState>(loginStateNotifier, (previous, state) {
       if (state is LoginStateFailure) {
@@ -89,7 +90,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _form(width),
+                  _form(width, isDarkMode),
                   Container(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
@@ -128,7 +129,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  Widget _form(double width) {
+  Widget _form(double width, bool isDarkMode) {
     return Form(
       key: _formKey,
       child: Column(
@@ -157,24 +158,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(15),
                   onTap: () async {
-                    MyApp.themeNotifier.value =
-                        MyApp.themeNotifier.value == ThemeMode.light
-                            ? ThemeMode.dark
-                            : ThemeMode.light;
-                    await SharedPreferencesStorage().setNightMode(
-                      MyApp.themeNotifier.value == ThemeMode.light
-                          ? false
-                          : true,
-                    );
+                    ref
+                        .read(darkModeProvider.notifier)
+                        .setDarkMode(!isDarkMode);
                   },
                   child: Icon(
-                    MyApp.themeNotifier.value == ThemeMode.light
-                        ? Icons.dark_mode
-                        : Icons.light_mode,
+                    !isDarkMode ? Icons.dark_mode : Icons.light_mode,
                     size: 24,
-                    color: MyApp.themeNotifier.value == ThemeMode.light
-                        ? AppColor.aluminium
-                        : AppColor.linkWater,
+                    color: isDarkMode ? AppColor.aluminium : AppColor.linkWater,
                   ),
                 ),
               ),

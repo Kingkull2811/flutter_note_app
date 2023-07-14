@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kull_note_app/network/provider/dark_mode_provider.dart';
 
-import '../main.dart';
 import '../util/app_theme.dart';
 import '../util/util.dart';
 
-class PrimaryButton extends StatelessWidget {
+class PrimaryButton extends ConsumerWidget {
   final String? text;
   final Function()? onTap;
   final IconData? suffixIcon;
@@ -25,15 +26,16 @@ class PrimaryButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = ref.watch(darkModeProvider).isDarkMode();
+
     return ButtonTheme(
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           elevation: 2,
-          backgroundColor: MyApp.themeNotifier.value == ThemeMode.light
-              ? AppColor.aluminium
-              : AppColor.greyChateau,
+          backgroundColor:
+              isDarkMode ? AppColor.aluminium : AppColor.greyChateau,
           foregroundColor: AppColor.linkWater,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -56,9 +58,7 @@ class PrimaryButton extends StatelessWidget {
                   child: Icon(
                     suffixIcon,
                     size: 24,
-                    color: MyApp.themeNotifier.value == ThemeMode.light
-                        ? AppColor.whisper
-                        : AppColor.midGrey,
+                    color: isDarkMode ? AppColor.whisper : AppColor.midGrey,
                   ),
                 ),
               if (isNotNullOrEmpty(iconPath))
@@ -78,9 +78,7 @@ class PrimaryButton extends StatelessWidget {
                   text ?? '',
                   style: TextStyle(
                     fontSize: 22,
-                    color: MyApp.themeNotifier.value == ThemeMode.light
-                        ? AppColor.whisper
-                        : AppColor.midGrey,
+                    color: isDarkMode ? AppColor.whisper : AppColor.midGrey,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kull_note_app/network/provider/dark_mode_provider.dart';
 
-import '../main.dart';
 import '../util/app_theme.dart';
 import '../util/util.dart';
 
-class InputFieldCustom extends StatelessWidget {
+class InputFieldCustom extends ConsumerWidget {
   // final BuildContext context;
   final TextEditingController? controller;
   final TextInputAction? inputAction;
@@ -52,19 +53,19 @@ class InputFieldCustom extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     if (initText != null) {
       controller?.text = initText!;
     }
+
+    final isDarkMode = !ref.watch(darkModeProvider).isDarkMode();
 
     return readOnly
         ? Container(
             height: 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: MyApp.themeNotifier.value == ThemeMode.light
-                  ? AppColor.whisper
-                  : AppColor.aluminium,
+              color: isDarkMode ? AppColor.whisper : AppColor.aluminium,
             ),
             child: ListTile(
               visualDensity: const VisualDensity(horizontal: -4, vertical: -2),
@@ -74,9 +75,7 @@ class InputFieldCustom extends StatelessWidget {
                   ? Icon(
                       prefixIcon,
                       size: 24,
-                      color: MyApp.themeNotifier.value == ThemeMode.light
-                          ? AppColor.midGrey
-                          : AppColor.whisper,
+                      color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                     )
                   : isNotNullOrEmpty(iconPath)
                       ? Padding(
@@ -86,7 +85,7 @@ class InputFieldCustom extends StatelessWidget {
                             height: 24,
                             width: 24,
                             fit: BoxFit.cover,
-                            color: MyApp.themeNotifier.value == ThemeMode.light
+                            color: isDarkMode
                                 ? AppColor.midGrey
                                 : AppColor.whisper,
                           ),
@@ -96,9 +95,7 @@ class InputFieldCustom extends StatelessWidget {
               title: Text(
                 labelText ?? hintText ?? '',
                 style: TextStyle(
-                  color: MyApp.themeNotifier.value == ThemeMode.light
-                      ? AppColor.midGrey
-                      : AppColor.whisper,
+                  color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                 ),
               ),
             ),
@@ -121,18 +118,14 @@ class InputFieldCustom extends StatelessWidget {
             keyboardType: keyboardType ?? TextInputType.text,
             style: TextStyle(
               fontSize: 16,
-              color: MyApp.themeNotifier.value == ThemeMode.light
-                  ? AppColor.midGrey
-                  : AppColor.whisper,
+              color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
             ),
             decoration: InputDecoration(
                 prefixIcon: isNotNullOrEmpty(prefixIcon)
                     ? Icon(
                         prefixIcon,
                         size: 24,
-                        color: MyApp.themeNotifier.value == ThemeMode.light
-                            ? AppColor.midGrey
-                            : AppColor.whisper,
+                        color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                       )
                     : isNotNullOrEmpty(iconPath)
                         ? Padding(
@@ -142,16 +135,14 @@ class InputFieldCustom extends StatelessWidget {
                               height: 24,
                               width: 24,
                               fit: BoxFit.cover,
-                              color:
-                                  MyApp.themeNotifier.value == ThemeMode.light
-                                      ? AppColor.midGrey
-                                      : AppColor.whisper,
+                              color: isDarkMode
+                                  ? AppColor.midGrey
+                                  : AppColor.whisper,
                             ),
                           )
                         : null,
-                prefixIconColor: MyApp.themeNotifier.value == ThemeMode.light
-                    ? AppColor.whisper
-                    : AppColor.midGrey,
+                prefixIconColor:
+                    isDarkMode ? AppColor.whisper : AppColor.midGrey,
                 suffixIcon: showSuffix
                     ? InkWell(
                         borderRadius: BorderRadius.circular(25),
@@ -159,54 +150,42 @@ class InputFieldCustom extends StatelessWidget {
                         child: Icon(
                           isShow ? suffix1 : suffix2,
                           size: 24,
-                          color: MyApp.themeNotifier.value == ThemeMode.light
-                              ? AppColor.midGrey
-                              : AppColor.whisper,
+                          color:
+                              isDarkMode ? AppColor.midGrey : AppColor.whisper,
                         ),
                       )
                     : null,
-                suffixIconColor: MyApp.themeNotifier.value == ThemeMode.light
-                    ? AppColor.midGrey
-                    : AppColor.whisper,
+                suffixIconColor:
+                    isDarkMode ? AppColor.midGrey : AppColor.whisper,
                 contentPadding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
                 filled: true,
-                fillColor: MyApp.themeNotifier.value == ThemeMode.light
-                    ? AppColor.whisper
-                    : AppColor.aluminium,
+                fillColor: isDarkMode ? AppColor.whisper : AppColor.aluminium,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
                     width: 1,
-                    color: MyApp.themeNotifier.value == ThemeMode.light
-                        ? AppColor.midGrey
-                        : AppColor.whisper,
+                    color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
                     width: 1,
-                    color: MyApp.themeNotifier.value == ThemeMode.light
-                        ? AppColor.whisper
-                        : AppColor.midGrey,
+                    color: isDarkMode ? AppColor.whisper : AppColor.midGrey,
                   ),
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
                     width: 1,
-                    color: MyApp.themeNotifier.value == ThemeMode.light
-                        ? AppColor.whisper
-                        : AppColor.midGrey,
+                    color: isDarkMode ? AppColor.whisper : AppColor.midGrey,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
                     width: 1,
-                    color: MyApp.themeNotifier.value == ThemeMode.light
-                        ? AppColor.midGrey
-                        : AppColor.whisper,
+                    color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                   ),
                 ),
                 errorBorder: OutlineInputBorder(
@@ -216,15 +195,11 @@ class InputFieldCustom extends StatelessWidget {
                 ),
                 labelText: labelText,
                 labelStyle: TextStyle(
-                  color: MyApp.themeNotifier.value == ThemeMode.light
-                      ? AppColor.midGrey
-                      : AppColor.whisper,
+                  color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                 ),
                 hintText: hintText,
                 hintStyle: TextStyle(
-                  color: MyApp.themeNotifier.value == ThemeMode.light
-                      ? AppColor.midGrey
-                      : AppColor.whisper,
+                  color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                 )),
           );
   }

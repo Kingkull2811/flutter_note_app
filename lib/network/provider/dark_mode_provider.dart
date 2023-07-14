@@ -3,19 +3,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../util/shared_preferences_storage.dart';
 
-class DarkModeNotifier extends StateNotifier<bool> {
-  DarkModeNotifier() : super(false);
+class DarkModeNotifier extends ChangeNotifier {
+  DarkModeNotifier();
 
-  void changeMode() async {
-    state = !state;
-    await SharedPreferencesStorage().setNightMode(state);
+  bool isDarkMode() => SharedPreferencesStorage().getNightMode();
+
+  void setDarkMode(bool value) async {
+    await SharedPreferencesStorage().setNightMode(value);
+    notifyListeners();
   }
-
-  void getState() => state = SharedPreferencesStorage().getNightMode();
 }
 
-final darkModeStateProvider = StateProvider<ThemeMode>((ref) {
-  return SharedPreferencesStorage().getNightMode()
-      ? ThemeMode.dark
-      : ThemeMode.light;
-});
+final darkModeProvider = ChangeNotifierProvider(
+  (ref) => DarkModeNotifier(),
+);

@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
 import '../widgets/message_dialog.dart';
 import 'app_theme.dart';
-
-Widget divider1Height() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: Divider(
-      height: 1,
-      color: MyApp.themeNotifier.value == ThemeMode.light
-          ? AppColor.aluminium
-          : AppColor.whisper,
-    ),
-  );
-}
 
 void showLoading(BuildContext context) {
   showDialog(
