@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kull_note_app/screens/note_detail/note_detail.dart';
 
 import 'screens/auth_checker.dart';
 import 'screens/home/home_screen.dart';
@@ -16,6 +17,7 @@ class AppRoute {
   static const login = '/auth/login';
   static const signup = '/auth/signup';
   static const profile = '/auth/profile';
+  static const noteDetail = '/home/noteDetail';
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -53,6 +55,8 @@ class AppRoute {
       //   return MaterialPageRoute(
       //     builder: (context) => const ProfileScreen(),
       //   );
+      case AppRoute.noteDetail:
+        return MaterialPageRoute(builder: (context) => const NoteDetail());
 
       default:
         return MaterialPageRoute(builder: (context) => const AuthChecker());
