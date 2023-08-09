@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:note_app/util/screen_util.dart';
 
+import '../../network/provider/auth_provider.dart';
 import '../../routes.dart';
 import '../../widgets/button.dart';
 import '../../widgets/custom_input_field.dart';
@@ -178,13 +180,31 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               child: PrimaryButton(
                 width: width,
                 text: AppLocalizations.of(context)?.signup,
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoute.profile);
+                onTap: () async {
                   if (_formKey.currentState!.validate()) {
                     //todo
                     //signup action
-
-                    // Navigator.pushNamed(context, AppRoute.profile);
+                    await ref
+                        .read(authRepositoryProvider)
+                        .signUpWithEmailAndPassword(
+                          _emailController.text,
+                          _passwordController.text,
+                        )
+                        .catchError((err) {
+                      if (err.toString() == 'email-already-in-use') {
+                        showCupertinoMessageDialog(
+                          context,
+                          AppLocalizations.of(context)?.error,
+                          AppLocalizations.of(context)?.email_used,
+                        );
+                      } else {
+                        showCupertinoMessageDialog(
+                          context,
+                          AppLocalizations.of(context)?.error,
+                          err.toString(),
+                        );
+                      }
+                    });
                   }
                 },
               ),

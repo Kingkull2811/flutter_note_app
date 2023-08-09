@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../routes.dart';
+import '../../util/constant.dart';
 import '../../util/screen_util.dart';
 import '../auth_exception.dart';
 
@@ -84,7 +87,14 @@ class AuthRepository {
 
   ///----------------Sign out------------------
 
-  Future<void> signOut() async => await _auth.signOut();
+  Future<void> signOut(BuildContext context) async =>
+      await _auth.signOut().then((res) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoute.login,
+          (route) => false,
+        );
+      });
 
   ///--------------Forgot password-------------
 
@@ -96,11 +106,16 @@ class AuthRepository {
     String email,
     String password,
   ) async {
+    final userRef = FirebaseFirestore.instance.collection(userCollection);
     try {
-      await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((result) {
+        userRef.doc(result.user!.uid).set({
+          'email': email,
+          'create_time': Timestamp.now(),
+        });
+      });
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.code);
     } catch (e) {

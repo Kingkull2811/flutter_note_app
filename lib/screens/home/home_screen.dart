@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kull_note_app/network/provider/dark_mode_provider.dart';
-import 'package:kull_note_app/util/app_theme.dart';
 
+import '../../network/provider/dark_mode_provider.dart';
 import '../../routes.dart';
+import '../../util/app_theme.dart';
 import '../../widgets/custom_input_field.dart';
 
 class HomeScreen extends StatefulHookConsumerWidget {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../network/auth_exception.dart';
@@ -26,8 +27,8 @@ class LoginNotifier extends StateNotifier<LoginState> {
     }
   }
 
-  Future<void> signOut() async {
-    await ref.read(authRepositoryProvider).signOut();
+  Future<void> signOut(BuildContext context) async {
+    await ref.read(authRepositoryProvider).signOut(context);
   }
 }
 

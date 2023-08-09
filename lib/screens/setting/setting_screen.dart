@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kull_note_app/network/provider/dark_mode_provider.dart';
-import 'package:kull_note_app/screens/login/login_state_notifier.dart';
 
+import '../../network/provider/dark_mode_provider.dart';
 import '../../util/app_theme.dart';
-import '../../util/screen_util.dart';
 import '../../util/util.dart';
+import '../login/login_state_notifier.dart';
 
 class SettingScreen extends StatefulHookConsumerWidget {
   const SettingScreen({super.key});
@@ -76,17 +75,19 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
               CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: () async {
-                  await ref.read(loginStateNotifier.notifier).signOut();
+                  await ref
+                      .read(loginStateNotifier.notifier)
+                      .signOut(this.context);
 
-                  showLoading(this.context);
-                  Future.delayed(
-                    const Duration(milliseconds: 300),
-                    () {
-                      Navigator.pop(this.context);
-                      Navigator.pop(this.context);
-                      Navigator.pop(this.context);
-                    },
-                  );
+                  // showLoading(this.context);
+                  // Future.delayed(
+                  //   const Duration(milliseconds: 300),
+                  //   () {
+                  //     Navigator.pop(this.context);
+                  //     Navigator.pop(this.context);
+                  //     Navigator.pop(this.context);
+                  //   },
+                  // );
                 },
                 child: Text(
                   AppLocalizations.of(context)?.logout ?? '',

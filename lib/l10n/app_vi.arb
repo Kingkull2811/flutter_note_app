@@ -9,6 +9,7 @@
   "error":"Lỗi !!!",
   "user_not_found":"Không tìm thấy người dùng",
   "wrong_pass":"Mật khẩu sai",
+  "email_used":"Địa chỉ email đã được sử dụng bởi một tài khoản khác.",
   "error_occurred":"Đã xảy ra lỗi. Vui lòng thử lại sau.",
   "not_have_account":"Chưa có tài khoản? ",
   "or":"----------   hoặc   ----------",

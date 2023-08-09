@@ -9,6 +9,7 @@
   "error":"ERROR !!!",
   "user_not_found":"User not found",
   "wrong_pass":"Wrong password",
+  "email_used":"The email address is already in use by another account.",
   "error_occurred":"An error occurred. Please try again later.",
   "not_have_account":"Don't have an account? ",
   "or":"----------   or   ----------",

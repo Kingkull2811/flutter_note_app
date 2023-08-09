@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kull_note_app/network/provider/dark_mode_provider.dart';
 
 import 'firebase_options.dart';
 import 'l10n/l10n.dart';
+import 'network/provider/dark_mode_provider.dart';
 import 'routes.dart';
 import 'util/app_theme.dart';
 import 'util/shared_preferences_storage.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kull_note_app/network/provider/dark_mode_provider.dart';
 
+import '../network/provider/dark_mode_provider.dart';
 import '../util/app_theme.dart';
 import '../util/util.dart';
 

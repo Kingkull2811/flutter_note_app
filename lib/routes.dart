@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kull_note_app/screens/note_detail/note_detail.dart';
+import 'package:note_app/screens/note_detail/note_detail.dart';
 
 import 'screens/auth_checker.dart';
 import 'screens/home/home_screen.dart';
