@@ -4,6 +4,8 @@
   "login":"Đăng nhập",
   "signup":"Đăng ký",
   "logout":"Đăng xuất",
+  "signUp_success": "Đăng ký thành công",
+  "go_to_login": "Vui lòng chuyển đến màn hình đăng nhập",
   "logout_confirm":"Bạn có muốn đăng xuất không?",
   "dark_mode":"Chế độ tối",
   "error":"Lỗi !!!",

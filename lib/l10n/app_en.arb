@@ -4,6 +4,8 @@
   "login":"Login",
   "signup":"Sign Up",
   "logout":"Logout",
+  "signUp_success": "Sign Up Successfully",
+  "go_to_login": "Please go to the login screen",
   "logout_confirm":"Do you want to log out?",
   "dark_mode":"Dark mode",
   "error":"ERROR !!!",

@@ -27,6 +27,7 @@ class InputFieldCustom extends ConsumerWidget {
   final String? Function(String?)? validator;
   final TextAlign? textAlign;
   final Pattern? whiteList;
+  final bool noWhiteList;
 
   const InputFieldCustom({
     super.key,
@@ -50,6 +51,7 @@ class InputFieldCustom extends ConsumerWidget {
     this.suffix1,
     this.suffix2,
     this.whiteList,
+    this.noWhiteList = false,
   });
 
   @override
@@ -106,10 +108,13 @@ class InputFieldCustom extends ConsumerWidget {
             controller: controller,
             validator: validator,
             obscureText: !isShow,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(maxText),
-              FilteringTextInputFormatter.allow(whiteList ?? RegExp('([\\S])')),
-            ],
+            inputFormatters: noWhiteList
+                ? null
+                : [
+                    LengthLimitingTextInputFormatter(maxText),
+                    FilteringTextInputFormatter.allow(
+                        whiteList ?? RegExp('([\\S])')),
+                  ],
             textAlign: textAlign ?? TextAlign.start,
             textAlignVertical: TextAlignVertical.center,
             textInputAction: inputAction ?? TextInputAction.done,

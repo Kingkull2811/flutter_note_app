@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:note_app/util/screen_util.dart';
+import 'package:note_app/screens/sign_up/sign_up_notifier.dart';
+import 'package:note_app/screens/sign_up/sign_up_state.dart';
 
-import '../../network/provider/auth_provider.dart';
 import '../../routes.dart';
+import '../../util/screen_util.dart';
 import '../../widgets/button.dart';
 import '../../widgets/custom_input_field.dart';
 
@@ -16,6 +19,7 @@ class SignUpScreen extends StatefulHookConsumerWidget {
 }
 
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confPasswordController = TextEditingController();
@@ -33,6 +37,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   void dispose() {
     super.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confPasswordController.dispose();
@@ -41,6 +46,41 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
+    ref.listen<SignUpState>(signUpStateNotifier, (previous, state) {
+      if (state is SignUpStateFailure) {
+        log('error SignUp: ${state.error}');
+        if (state.error == 'email-already-in-use') {
+          showCupertinoMessageDialog(
+            context,
+            AppLocalizations.of(context)?.error,
+            AppLocalizations.of(context)?.email_used,
+          );
+        } else {
+          showCupertinoMessageDialog(
+            context,
+            AppLocalizations.of(context)?.error,
+            state.error,
+          );
+        }
+      }
+      if (state is SignUpStateLoading) {
+        showLoading(context);
+        Future.delayed(
+          const Duration(milliseconds: 300),
+          () => Navigator.pop(context),
+        );
+      }
+      if (state is SignUpStateSuccess) {
+        showCupertinoMessageDialog(
+          context,
+          AppLocalizations.of(context)?.signUp_success,
+          AppLocalizations.of(context)?.go_to_login,
+          buttonLabel: AppLocalizations.of(context)?.login,
+          onClose: () => Navigator.pushNamed(context, AppRoute.login),
+        );
+      }
+    });
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -104,7 +144,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 60, 0, 16),
+            padding: const EdgeInsets.fromLTRB(0, 40, 0, 16),
+            child: InputFieldCustom(
+              controller: _nameController,
+              labelText: 'Name',
+              prefixIcon: Icons.person_outline,
+              noWhiteList: true,
+              // validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Please enter name';
+              //   }
+              //   return null;
+              // },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
             child: InputFieldCustom(
               controller: _emailController,
               // initText: 'test@gmail.com',
@@ -114,8 +169,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return AppLocalizations.of(context)?.enter_username;
-                  // } else if (!emailRegex.hasMatch(value)) {
-                  //   return AppLocalizations.of(context)?.invalid_email;
                 } else if (value.length < 5) {
                   return AppLocalizations.of(context)?.email_5_char;
                 }
@@ -127,9 +180,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
             child: InputFieldCustom(
               controller: _passwordController,
-              // initText: '12345678',
               labelText: AppLocalizations.of(context)?.password,
-              // hintText: 'Enter your password',
               prefixIcon: Icons.lock_outline,
               showSuffix: true,
               suffix1: Icons.remove_red_eye_outlined,
@@ -150,9 +201,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
             child: InputFieldCustom(
               controller: _confPasswordController,
-              // initText: '12345678',
               labelText: AppLocalizations.of(context)?.confirm_password,
-              // hintText: 'Enter your password',
               prefixIcon: Icons.lock_outline,
               showSuffix: true,
               suffix1: Icons.remove_red_eye_outlined,
@@ -182,29 +231,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 text: AppLocalizations.of(context)?.signup,
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
-                    //todo
-                    //signup action
-                    await ref
-                        .read(authRepositoryProvider)
-                        .signUpWithEmailAndPassword(
-                          _emailController.text,
-                          _passwordController.text,
-                        )
-                        .catchError((err) {
-                      if (err.toString() == 'email-already-in-use') {
-                        showCupertinoMessageDialog(
-                          context,
-                          AppLocalizations.of(context)?.error,
-                          AppLocalizations.of(context)?.email_used,
+                    ref.read(signUpStateNotifier.notifier).signUp(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          name: _nameController.text,
                         );
-                      } else {
-                        showCupertinoMessageDialog(
-                          context,
-                          AppLocalizations.of(context)?.error,
-                          err.toString(),
-                        );
-                      }
-                    });
                   }
                 },
               ),

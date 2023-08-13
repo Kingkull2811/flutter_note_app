@@ -80,11 +80,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        // resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height - 32,
             child: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

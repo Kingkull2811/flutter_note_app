@@ -102,10 +102,11 @@ class AuthRepository {
 
   ///----------------Sign Up-----------------
 
-  Future<void> signUpWithEmailAndPassword(
-    String email,
-    String password,
-  ) async {
+  Future<void> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
     final userRef = FirebaseFirestore.instance.collection(userCollection);
     try {
       await _auth
@@ -113,6 +114,7 @@ class AuthRepository {
           .then((result) {
         userRef.doc(result.user!.uid).set({
           'email': email,
+          'name': name,
           'create_time': Timestamp.now(),
         });
       });
