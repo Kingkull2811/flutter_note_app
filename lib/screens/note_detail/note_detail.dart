@@ -95,69 +95,131 @@ class _NoteDetailState extends ConsumerState<NoteDetail> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                8,
+                16,
+                MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    currentTime,
-                    style: TextStyle(
-                      color: isDarkMode
-                          ? AppColor.greyChateau
-                          : AppColor.linkWater,
+                  Container(
+                    height: 30,
+                    color: Colors.yellow,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          currentTime,
+                          style: TextStyle(
+                            color: isDarkMode
+                                ? AppColor.greyChateau
+                                : AppColor.linkWater,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: isDarkMode
+                                ? AppColor.greyChateau
+                                : AppColor.linkWater,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text('folder name'),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 6,
-                      horizontal: 10,
+                    color: Colors.redAccent,
+                    height: 50,
+                    width: w - 16 * 2,
+                    child: TextFormField(
+                      controller: titleController,
+                      maxLines: 1,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        hintText: 'Title',
+                        border: InputBorder.none,
+                        filled: false,
+                      ),
+                      style: TextStyle(fontSize: 24),
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: isDarkMode
-                          ? AppColor.greyChateau
-                          : AppColor.linkWater,
+                  ),
+                  Container(
+                    color: Colors.blue,
+                    height: MediaQuery.of(context).size.height - 30 - 50 - 100,
+                    width: w - 16 * 2,
+                    // padding: EdgeInsets.only(bottom: 16),
+                    child: TextFormField(
+                      controller: contentController,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        hintText: 'Content',
+                        border: InputBorder.none,
+                        filled: false,
+                      ),
+                      style: TextStyle(fontSize: 16),
                     ),
-                    alignment: Alignment.center,
-                    child: Text('folder name'),
                   ),
                 ],
               ),
-              SizedBox(
-                width: w - 16 * 2,
-                child: TextFormField(
-                  controller: titleController,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    hintText: 'Title',
-                    border: InputBorder.none,
-                    filled: false,
+            ),
+            if (MediaQuery.of(context).viewInsets.bottom != 0)
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  height: 70,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    border: BorderDirectional(
+                        top: BorderSide(
+                      color: Colors.grey,
+                      width: 0.5,
+                    )),
+                    color: Colors.white,
                   ),
-                  style: TextStyle(fontSize: 24),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                      Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                      Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                      Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                      Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Container(
-                width: w - 16 * 2,
-                padding: EdgeInsets.only(bottom: 16),
-                child: TextFormField(
-                  controller: contentController,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    hintText: 'Content',
-                    border: InputBorder.none,
-                    filled: false,
-                  ),
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );
