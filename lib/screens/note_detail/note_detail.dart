@@ -16,8 +16,6 @@ class _NoteDetailState extends ConsumerState<NoteDetail> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
-  final _scrollController = ScrollController();
-
   bool isShowDone = false;
   final String currentTime =
       DateFormat('dd/MM/yyyy HH:mm aa').format(DateTime.now());
