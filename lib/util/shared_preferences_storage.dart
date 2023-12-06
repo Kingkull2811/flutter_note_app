@@ -10,13 +10,11 @@ class SharedPreferencesStorage {
   }
 
   /// -------App Info
-  Future<void> setFirstTimeOpenApp(bool value) async =>
-      await _prefs.setBool(firstTimeOpenApp, value);
+  setFirstTimeOpenApp(bool value) async => await _prefs.setBool(firstTimeOpenApp, value);
 
   bool getFirstTimeOpenApp() => _prefs.getBool(firstTimeOpenApp) ?? false;
 
-  Future<void> setNightMode(bool value) async =>
-      await _prefs.setBool(nightModeKey, value);
+  Future<void> setNightMode(bool value) async => await _prefs.setBool(nightModeKey, value);
 
   bool getNightMode() => _prefs.getBool(nightModeKey) ?? false;
 }

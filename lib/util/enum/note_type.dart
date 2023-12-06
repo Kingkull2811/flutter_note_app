@@ -1,0 +1,1 @@
+enum NoteType{ text, textImage, listTask,  }

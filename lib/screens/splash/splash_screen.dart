@@ -118,10 +118,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: Text(
             title,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26,
-                ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, fontSize: 26),
           ),
         ),
         Padding(
@@ -129,9 +126,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           child: Text(
             content,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 16,
-                ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
           ),
         ),
         const Spacer(),
@@ -146,21 +141,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       child: PrimaryButton(
         width: MediaQuery.of(context).size.width,
         text: buttonLabel,
-        onTap: () async {
+        onTap: () {
           if (index < 3) {
-            pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.ease,
-            );
+            pageController.animateToPage(index, duration: const Duration(milliseconds: 400), curve: Curves.ease);
           } else {
             //set first time open app & navigate to login screen
-            await SharedPreferencesStorage().setFirstTimeOpenApp(true);
-            Navigator.pushNamedAndRemoveUntil(
-              this.context,
-              AppRoute.auth,
-              (route) => false,
-            );
+            SharedPreferencesStorage().setFirstTimeOpenApp(true);
+            Navigator.pushNamedAndRemoveUntil(this.context, AppRoute.auth, (route) => false);
           }
         },
       ),

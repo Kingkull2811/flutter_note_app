@@ -64,7 +64,7 @@ class InputFieldCustom extends ConsumerWidget {
 
     return readOnly
         ? Container(
-            height: 50,
+            height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: isDarkMode ? AppColor.whisper : AppColor.aluminium,
@@ -87,9 +87,7 @@ class InputFieldCustom extends ConsumerWidget {
                             height: 24,
                             width: 24,
                             fit: BoxFit.cover,
-                            color: isDarkMode
-                                ? AppColor.midGrey
-                                : AppColor.whisper,
+                            color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                           ),
                         )
                       : null,
@@ -112,8 +110,7 @@ class InputFieldCustom extends ConsumerWidget {
                 ? null
                 : [
                     LengthLimitingTextInputFormatter(maxText),
-                    FilteringTextInputFormatter.allow(
-                        whiteList ?? RegExp('([\\S])')),
+                    FilteringTextInputFormatter.allow(whiteList ?? RegExp('([\\S])')),
                   ],
             textAlign: textAlign ?? TextAlign.start,
             textAlignVertical: TextAlignVertical.center,
@@ -127,11 +124,7 @@ class InputFieldCustom extends ConsumerWidget {
             ),
             decoration: InputDecoration(
                 prefixIcon: isNotNullOrEmpty(prefixIcon)
-                    ? Icon(
-                        prefixIcon,
-                        size: 24,
-                        color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
-                      )
+                    ? Icon(prefixIcon, size: 24, color: isDarkMode ? AppColor.midGrey : AppColor.whisper)
                     : isNotNullOrEmpty(iconPath)
                         ? Padding(
                             padding: const EdgeInsets.all(13.0),
@@ -140,72 +133,46 @@ class InputFieldCustom extends ConsumerWidget {
                               height: 24,
                               width: 24,
                               fit: BoxFit.cover,
-                              color: isDarkMode
-                                  ? AppColor.midGrey
-                                  : AppColor.whisper,
+                              color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
                             ),
                           )
                         : null,
-                prefixIconColor:
-                    isDarkMode ? AppColor.whisper : AppColor.midGrey,
+                prefixIconColor: isDarkMode ? AppColor.whisper : AppColor.midGrey,
                 suffixIcon: showSuffix
                     ? InkWell(
                         borderRadius: BorderRadius.circular(25),
                         onTap: onTapSuffix,
-                        child: Icon(
-                          isShow ? suffix1 : suffix2,
-                          size: 24,
-                          color:
-                              isDarkMode ? AppColor.midGrey : AppColor.whisper,
-                        ),
+                        child: Icon(isShow ? suffix1 : suffix2, size: 24, color: isDarkMode ? AppColor.midGrey : AppColor.whisper),
                       )
                     : null,
-                suffixIconColor:
-                    isDarkMode ? AppColor.midGrey : AppColor.whisper,
-                contentPadding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+                suffixIconColor: isDarkMode ? AppColor.midGrey : AppColor.whisper,
+                contentPadding: EdgeInsets.zero,
                 filled: true,
                 fillColor: isDarkMode ? AppColor.whisper : AppColor.aluminium,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
-                  ),
+                  borderSide: BorderSide(width: 1, color: isDarkMode ? AppColor.midGrey : AppColor.whisper),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: isDarkMode ? AppColor.whisper : AppColor.midGrey,
-                  ),
+                  borderSide: BorderSide(width: 1, color: isDarkMode ? AppColor.whisper : AppColor.midGrey),
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: isDarkMode ? AppColor.whisper : AppColor.midGrey,
-                  ),
+                  borderSide: BorderSide(width: 1, color: isDarkMode ? AppColor.whisper : AppColor.midGrey),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
-                  ),
+                  borderSide: BorderSide(width: 1, color: isDarkMode ? AppColor.midGrey : AppColor.whisper),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide:
-                      const BorderSide(width: 1, color: Colors.redAccent),
+                  borderSide: const BorderSide(width: 1, color: Colors.redAccent),
                 ),
                 labelText: labelText,
-                labelStyle: TextStyle(
-                  color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
-                ),
+                labelStyle: TextStyle(color: isDarkMode ? AppColor.midGrey : AppColor.whisper),
                 hintText: hintText,
-                hintStyle: TextStyle(
-                  color: isDarkMode ? AppColor.midGrey : AppColor.whisper,
-                )),
+                hintStyle: TextStyle(color: isDarkMode ? AppColor.midGrey : AppColor.whisper)),
           );
   }
 }

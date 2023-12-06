@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:note_app/library/amin_search_bar.dart';
 
 import '../../network/provider/dark_mode_provider.dart';
 import '../../routes.dart';
 import '../../util/app_theme.dart';
 import '../../widgets/custom_input_field.dart';
+import 'list_notes.dart';
 
 class HomeScreen extends StatefulHookConsumerWidget {
   const HomeScreen({super.key});
@@ -15,6 +17,8 @@ class HomeScreen extends StatefulHookConsumerWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _searchController = TextEditingController();
+
+  bool isShowClearText = false;
 
   @override
   void initState() {
@@ -34,22 +38,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight - 24) * 0.3;
     final double itemWidth = size.width / 2;
+    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        // key: scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              onPressed: () => Navigator.pushNamed(context, AppRoute.settings),
-              icon: const Icon(Icons.settings),
-            ),
-          ],
+          elevation: 2,
+          actions: [IconButton(onPressed: () => Navigator.pushNamed(context, AppRoute.settings), icon: const Icon(Icons.settings))],
         ),
         floatingActionButton: InkWell(
           borderRadius: BorderRadius.circular(25),
-          onTap: () => Navigator.pushNamed(context, AppRoute.noteDetail),
+          onTap: () => Navigator.pushNamed(context, AppRoute.noteDetail, arguments: {'data': null}),
           child: Container(
             width: 50,
             height: 50,
@@ -63,62 +65,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
         body: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              child: InputFieldCustom(
-                controller: _searchController,
-                prefixIcon: Icons.search,
-                hintText: 'Search ...',
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
+              child: SizedBox(
+                height: 36,
+                child: InputFieldCustom(
+                  controller: _searchController,
+                  prefixIcon: Icons.search,
+                  hintText: 'Search ...',
+                  showSuffix: _searchController.text.isNotEmpty,
+                  suffix1: Icons.cancel_outlined,
+                ),
               ),
             ),
-            Expanded(
+            // Padding(
+            //   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            //   child: AminSearchBar(
+            //     width: size.width - 20,
+            //     height: 48,
+            //     controller: _searchController,
+            //     onSuffixTap: () => _searchController.clear(),
+            //     onSubmitted: (v) {},
+            //     searchBarOpen: (v) {},
+            //   ),
+            // ),
+            Flexible(
+              flex: 1,
+              fit: FlexFit.loose,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    //todo
-                  },
-                  color: isDarkMode ? Colors.white : Colors.grey,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      childAspectRatio: (itemWidth / itemHeight),
-                    ),
-                    itemCount: 29,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: isDarkMode
-                              ? AppColor.greyChateau
-                              : Colors.grey[200],
-                        ),
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'title note',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Expanded(
-                              child: Text(
-                                'content note note note note note note note note note note note note note note',
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Text('create time note'),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: RefreshIndicator(onRefresh: () async {}, color: isDarkMode ? Colors.white : Colors.grey, child: ListNotes()),
               ),
             ),
           ],

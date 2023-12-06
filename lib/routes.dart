@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/network/model/note_model/note_model.dart';
 import 'package:note_app/screens/note_detail/note_detail.dart';
 
 import 'screens/auth_checker.dart';
@@ -23,11 +24,8 @@ class AppRoute {
     switch (settings.name) {
       case AppRoute.main:
         return MaterialPageRoute(builder: (context) {
-          final bool isFirstTimeOpenApp =
-              SharedPreferencesStorage().getFirstTimeOpenApp();
-          return isFirstTimeOpenApp
-              ? const AuthChecker()
-              : const SplashScreen();
+          final bool isFirstTimeOpenApp = SharedPreferencesStorage().getFirstTimeOpenApp();
+          return isFirstTimeOpenApp ? const AuthChecker() : const SplashScreen();
         });
       case AppRoute.auth:
         return MaterialPageRoute(builder: (context) => const AuthChecker());
@@ -56,7 +54,8 @@ class AppRoute {
       //     builder: (context) => const ProfileScreen(),
       //   );
       case AppRoute.noteDetail:
-        return MaterialPageRoute(builder: (context) => const NoteDetail());
+        final arguments = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(builder: (context) => NoteDetail(noteDetail: arguments['data'] == null ? null : arguments['data'] as NoteModel));
 
       default:
         return MaterialPageRoute(builder: (context) => const AuthChecker());

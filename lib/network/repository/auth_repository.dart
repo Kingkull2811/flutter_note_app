@@ -56,8 +56,7 @@ class AuthRepository {
       //trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       //obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
       if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
         //create a new credential
@@ -87,13 +86,8 @@ class AuthRepository {
 
   ///----------------Sign out------------------
 
-  Future<void> signOut(BuildContext context) async =>
-      await _auth.signOut().then((res) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoute.login,
-          (route) => false,
-        );
+  Future<void> signOut(BuildContext context) async => await _auth.signOut().then((res) {
+        Navigator.pushNamedAndRemoveUntil(context, AppRoute.login, (route) => false);
       });
 
   ///--------------Forgot password-------------
@@ -109,9 +103,7 @@ class AuthRepository {
   }) async {
     final userRef = FirebaseFirestore.instance.collection(userCollection);
     try {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((result) {
+      await _auth.createUserWithEmailAndPassword(email: email, password: password).then((result) {
         userRef.doc(result.user!.uid).set({
           'email': email,
           'name': name,

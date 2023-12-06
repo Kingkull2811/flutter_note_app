@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:note_app/network/model/note_model/note_model.dart';
 
 import '../../network/provider/dark_mode_provider.dart';
 import '../../util/app_theme.dart';
 
 class NoteDetail extends StatefulHookConsumerWidget {
-  const NoteDetail({super.key});
+  final NoteModel? noteDetail;
+
+  const NoteDetail({super.key, this.noteDetail});
 
   @override
   ConsumerState<NoteDetail> createState() => _NoteDetailState();
@@ -17,18 +20,11 @@ class _NoteDetailState extends ConsumerState<NoteDetail> {
   final contentController = TextEditingController();
 
   bool isShowDone = false;
-  final String currentTime =
-      DateFormat('dd/MM/yyyy HH:mm aa').format(DateTime.now());
+  final String currentTime = DateFormat('dd/MM/yyyy HH:mm aa').format(DateTime.now());
 
-  // // Height of your Container
-  // static const _containerHeight = 100.0;
-  //
-  // // You don't need to change any of these variables
-  // var _fromTop = -_containerHeight;
-  // var _allowReverse = true, _allowForward = true;
-  // var _prevOffset = 0.0;
-  // var _prevForwardOffset = -_containerHeight;
-  // var _prevReverseOffset = 0.0;
+  double fontSize = 14.0;
+  FontWeight fontWeight = FontWeight.normal;
+  Color textColor = Colors.black;
 
   @override
   void initState() {
@@ -83,25 +79,13 @@ class _NoteDetailState extends ConsumerState<NoteDetail> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.check,
-                size: 24,
-              ),
-            ),
-          ],
+          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.check, size: 24))],
         ),
         body: Stack(
           children: [
             SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(
-                16,
-                8,
-                16,
-                MediaQuery.of(context).viewInsets.bottom,
-              ),
+              padding: EdgeInsets.fromLTRB(10, 8, 10, MediaQuery.of(context).viewInsets.bottom),
+              // physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -113,25 +97,10 @@ class _NoteDetailState extends ConsumerState<NoteDetail> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          currentTime,
-                          style: TextStyle(
-                            color: isDarkMode
-                                ? AppColor.greyChateau
-                                : AppColor.linkWater,
-                          ),
-                        ),
+                        Text(currentTime, style: TextStyle(color: isDarkMode ? AppColor.greyChateau : AppColor.linkWater)),
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 6,
-                            horizontal: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: isDarkMode
-                                ? AppColor.greyChateau
-                                : AppColor.linkWater,
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: isDarkMode ? AppColor.greyChateau : AppColor.linkWater),
                           alignment: Alignment.center,
                           child: Text('folder name'),
                         ),
@@ -140,38 +109,32 @@ class _NoteDetailState extends ConsumerState<NoteDetail> {
                   ),
                   Container(
                     color: Colors.redAccent,
-                    height: 50,
-                    width: w - 16 * 2,
+                    // height: 45,
+                    width: w - 20,
                     child: TextFormField(
                       controller: titleController,
-                      maxLines: 1,
+                      scrollPhysics: const NeverScrollableScrollPhysics(),
+                      maxLines: null,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.zero,
-                        hintText: 'Title',
-                        border: InputBorder.none,
-                        filled: false,
-                      ),
-                      style: TextStyle(fontSize: 24),
+                      decoration: const InputDecoration(contentPadding: EdgeInsets.zero, hintText: 'Title', border: InputBorder.none, filled: false),
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                     ),
                   ),
                   Container(
                     color: Colors.blue,
-                    height: MediaQuery.of(context).size.height - 30 - 50 - 100,
-                    width: w - 16 * 2,
-                    // padding: EdgeInsets.only(bottom: 16),
+                    // height: MediaQuery.of(context).size.height - 30 - 45 - 100,
+                    width: w - 20,
+                    // padding:  EdgeInsets.only(top: contentController.text != ''?  6: 0),
+                    // alignment: Alignment.topLeft,
                     child: TextFormField(
                       controller: contentController,
+                      scrollPhysics: const NeverScrollableScrollPhysics(),
                       maxLines: null,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.zero,
-                        hintText: 'Content',
-                        border: InputBorder.none,
-                        filled: false,
-                      ),
-                      style: TextStyle(fontSize: 16),
+                      decoration: const InputDecoration(contentPadding: EdgeInsets.zero, hintText: 'Content', border: InputBorder.none, filled: false),
+                      style: TextStyle(fontSize: fontSize, fontWeight: fontWeight, color: textColor),
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom != 0 ? 60 : 20),
                 ],
               ),
             ),
@@ -179,15 +142,11 @@ class _NoteDetailState extends ConsumerState<NoteDetail> {
               Positioned(
                 bottom: 0,
                 child: Container(
-                  height: 70,
+                  height: 40,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    border: BorderDirectional(
-                        top: BorderSide(
-                      color: Colors.grey,
-                      width: 0.5,
-                    )),
-                    color: Colors.white,
+                    border: BorderDirectional(top: BorderSide(color: Colors.grey, width: 0.5), bottom:BorderSide(color: Colors.grey, width: 0.5) ),
+                    color: Colors.transparent,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
